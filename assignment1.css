@@ -1,0 +1,165 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+header {
+    background-color: #4B8BBE;
+    color: white;
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo img {
+    height: 40px;
+    margin-left: 20px;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.search-donate {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.search-donate .donate,
+.search-donate .socialize {
+    background-color: #FFD43B;
+    color: black;
+    padding: 5px 10px;
+    margin: 0 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.search-donate .search {
+    display: flex;
+    align-items: center;
+}
+
+.search-donate .search input {
+    padding: 5px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-donate .search button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #306998;
+    color: white;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.intro .code {
+    background-color: #2b2b2b;
+    color: #f8f8f2;
+    padding: 20px;
+    border-radius: 5px;
+    width: 45%;
+}
+
+.intro .description {
+    width: 50%;
+}
+
+.intro .description h2 {
+    margin-top: 0;
+}
+
+.get-started,
+.news-events {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.get-started > div,
+.news-events > div {
+    width: 23%;
+    background-color: #ececec;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.get-started h3,
+.news-events h3 {
+    margin-top: 0;
+}
+
+.success-stories {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ececec;
+    border-radius: 5px;
+}
+
+.use-python {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #ececec;
+    border-radius: 5px;
+}
+
+.psf {
+    padding: 20px;
+    background-color: #ececec;
+    border-radius: 5px;
+}
+
+footer {
+    background-color: #4B8BBE;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+}
+
+footer ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+footer ul li a {
+    color: white;
+    text-decoration: none;
+}

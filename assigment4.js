@@ -7,7 +7,7 @@ const withdraw = (person, amount) => {
     }
   };
   
-  // Example usage:
+
   const person = { balance: 1000 };
   console.log(`Initial balance: ${person.balance}`);
   

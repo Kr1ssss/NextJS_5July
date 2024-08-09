@@ -14,5 +14,5 @@ const withdraw = (person, amount) => {
   withdraw(person, 500);
   console.log(`Balance after withdrawal: ${person.balance}`);
   
-  withdraw(person, 600); // This should print an error message
+  withdraw(person, 600); 
   console.log(`Balance after second withdrawal: ${person.balance}`);

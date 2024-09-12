@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// RecipeDetail.jsx
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -7,7 +8,6 @@ const RecipeDetail = () => {
   const [recipe, setRecipe] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
@@ -29,9 +29,9 @@ const RecipeDetail = () => {
       <button onClick={() => navigate('/')} className="mb-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors">
         Go Back
       </button>
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">{recipe.strMeal}</h1>
-      <img src={recipe.strMealThumb} alt={recipe.strMeal} className="w-full h-64 object-cover rounded-lg mb-6" />
-      <p className="text-gray-700 text-lg">{recipe.strInstructions}</p>
+      <h1 className="text-3xl font-bold">{recipe.strMeal}</h1>
+      <p className="mt-4">{recipe.strInstructions}</p>
+      <img src={recipe.strMealThumb} alt={recipe.strMeal} className="mt-6 w-full rounded-lg shadow-md" />
     </div>
   );
 };

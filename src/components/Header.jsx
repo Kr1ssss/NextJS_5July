@@ -1,16 +1,17 @@
+// Header.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header>
+    <header className="bg-gray-800 text-white p-4">
       <nav>
-        <ul>
+        <ul className="flex space-x-4">
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/" className="hover:underline">Home</Link>
           </li>
           <li>
-            <Link to="/add-recipe">Add Recipe</Link>
+            <Link to="/add-recipe" className="hover:underline">Add Recipe</Link>
           </li>
         </ul>
       </nav>

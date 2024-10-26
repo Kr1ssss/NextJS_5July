@@ -1,63 +1,47 @@
 'use client'
 
-import { useState } from 'react'
-import { Workout } from '../types'
+import { useState, useEffect } from 'react'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { Workout, ScheduledActivity } from '@/app/types'
 
-interface ChartData {
-  date: string;
-  duration: number;
+type ActivityChartProps = {
+  workouts: Workout[]
+  scheduledActivities: ScheduledActivity[]
 }
 
-export default function ActivityChart({ workouts }: { workouts: Workout[] }) {
-  const [timeRange, setTimeRange] = useState('week')
+export function ActivityChart({ workouts, scheduledActivities }: ActivityChartProps) {
+  const [chartData, setChartData] = useState<any[]>([])
 
-  const getFilteredData = (): ChartData[] => {
-    const now = new Date()
-    const filteredWorkouts = workouts.filter(workout => {
-      const workoutDate = new Date(workout.date)
-      if (timeRange === 'week') {
-        return now.getTime() - workoutDate.getTime() <= 7 * 24 * 60 * 60 * 1000
-      } else if (timeRange === 'month') {
-        return now.getTime() - workoutDate.getTime() <= 30 * 24 * 60 * 60 * 1000
-      }
-      return true // 'all' time range
-    })
+  useEffect(() => {
+    const combinedActivities = [...workouts, ...scheduledActivities].sort((a, b) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    ).slice(0, 7)
 
-    const data: Record<string, ChartData> = {}
-    filteredWorkouts.forEach(workout => {
-      const date = new Date(workout.date).toLocaleDateString()
-      if (!data[date]) {
-        data[date] = { date, duration: 0 }
-      }
-      data[date].duration += workout.duration
-    })
+    const data = combinedActivities.map(activity => ({
+      date: new Date(activity.date).toLocaleDateString(),
+      duration: 'duration' in activity ? activity.duration : 0,
+      calories: 'caloriesBurned' in activity ? activity.caloriesBurned : 0,
+      type: 'type' in activity ? 'Workout' : 'Scheduled',
+    }))
 
-    return Object.values(data)
+    console.log('Chart data:', data)
+    setChartData(data)
+  }, [workouts, scheduledActivities])
+
+  if (chartData.length === 0) {
+    return <div>No activity data available</div>
   }
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">Activity</h3>
-        <select
-          value={timeRange}
-          onChange={(e) => setTimeRange(e.target.value)}
-          className="border rounded p-1"
-        >
-          <option value="week">Last Week</option>
-          <option value="month">Last Month</option>
-          <option value="all">All Time</option>
-        </select>
-      </div>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={getFilteredData()}>
-          <XAxis dataKey="date" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="duration" fill="#8884d8" />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={chartData}>
+        <XAxis dataKey="date" />
+        <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
+        <YAxis yAxisId="right" orientation="right" stroke="#82ca9d" />
+        <Tooltip />
+        <Bar yAxisId="left" dataKey="duration" fill="#8884d8" name="Duration (minutes)" />
+        <Bar yAxisId="right" dataKey="calories" fill="#82ca9d" name="Calories Burned" />
+      </BarChart>
+    </ResponsiveContainer>
   )
 }

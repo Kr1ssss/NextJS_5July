@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import { PrismaClient } from '@prisma/client';
 import { Workout, UserStats, DietPlan, ScheduledActivity, Trainer } from '../types';
 
@@ -40,13 +39,21 @@ export async function getUserStats(userId: string): Promise<UserStats> {
 }
 
 export async function getRecentWorkouts(userId: string, limit: number = 5): Promise<Workout[]> {
-  const recentWorkouts = await prisma.workout.findMany({
-    where: { userId },
-    orderBy: { date: 'desc' },
-    take: limit,
-  });
-  return recentWorkouts;
+  try {
+    console.log(`Fetching recent workouts for user: ${userId}`);
+    const recentWorkouts = await prisma.workout.findMany({
+      where: { userId },
+      orderBy: { date: 'desc' },
+      take: limit,
+    });
+    console.log(`Found ${recentWorkouts.length} recent workouts`);
+    return recentWorkouts;
+  } catch (error) {
+    console.error('Error fetching recent workouts:', error);
+    return [];
+  }
 }
+
 
 export async function getDietPlans(userId: string): Promise<DietPlan[]> {
   const dietPlans = await prisma.dietPlan.findMany({
@@ -55,8 +62,22 @@ export async function getDietPlans(userId: string): Promise<DietPlan[]> {
   });
   return dietPlans.map(plan => ({
     ...plan,
-    meals: plan.meals as Prisma.JsonValue
+    meals: plan.meals as any
   }));
+}
+export async function getLatestDietPlan(userId: string): Promise<DietPlan | null> {
+  try {
+    console.log(`Fetching latest diet plan for user: ${userId}`);
+    const latestDietPlan = await prisma.dietPlan.findFirst({
+      where: { userId },
+      orderBy: { date: 'desc' },
+    });
+    console.log(`Latest diet plan found: ${latestDietPlan ? 'Yes' : 'No'}`);
+    return latestDietPlan;
+  } catch (error) {
+    console.error('Error fetching latest diet plan:', error);
+    return null;
+  }
 }
 
 export async function createDietPlan(dietPlan: Omit<DietPlan, 'id'>): Promise<DietPlan> {
@@ -72,13 +93,6 @@ export async function createDietPlan(dietPlan: Omit<DietPlan, 'id'>): Promise<Di
   };
 }
 
-export async function getScheduledActivities(userId: string): Promise<ScheduledActivity[]> {
-  const scheduledActivities = await prisma.scheduledActivity.findMany({
-    where: { userId },
-    orderBy: { date: 'asc' },
-  });
-  return scheduledActivities;
-}
 
 export async function createScheduledActivity(activity: Omit<ScheduledActivity, 'id'>): Promise<ScheduledActivity> {
   const createdActivity = await prisma.scheduledActivity.create({
@@ -88,10 +102,36 @@ export async function createScheduledActivity(activity: Omit<ScheduledActivity, 
 }
 
 
-export async function getTrainers(): Promise<Trainer[]> {
-  const trainers = await prisma.trainer.findMany();
-  return trainers;
+export async function getScheduledActivities(userId: string): Promise<ScheduledActivity[]> {
+  try {
+    console.log(`Fetching scheduled activities for user: ${userId}`);
+    const activities = await prisma.scheduledActivity.findMany({
+      where: { userId },
+      orderBy: { date: 'desc' },
+      take: 10,
+    });
+    console.log(`Found ${activities.length} scheduled activities`);
+    return activities;
+  } catch (error) {
+    console.error('Error fetching scheduled activities:', error);
+    return [];
+  }
 }
+
+export async function getRecommendedTrainers(): Promise<Trainer[]> {
+  try {
+    console.log('Fetching recommended trainers');
+    const trainers = await prisma.trainer.findMany({
+      take: 3,
+    });
+    console.log(`Found ${trainers.length} recommended trainers:`, trainers);
+    return trainers;
+  } catch (error) {
+    console.error('Error fetching recommended trainers:', error);
+    return [];
+  }
+}
+
 
 export async function createTrainer(trainer: Omit<Trainer, 'id'>): Promise<Trainer> {
   const createdTrainer = await prisma.trainer.create({

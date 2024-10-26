@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client'
 import { User as PrismaUser, Workout as PrismaWorkout, Goal as PrismaGoal, DietPlan as PrismaDietPlan, ScheduledActivity as PrismaScheduledActivity, Trainer as PrismaTrainer } from "@prisma/client"
 
 export type User = PrismaUser

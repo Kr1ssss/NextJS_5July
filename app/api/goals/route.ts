@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json()
-  const { description, target, unit } = body
+  const { title, description, target, unit, targetDate } = body
 
   try {
     const user = await prisma.user.findUnique({
@@ -24,9 +24,11 @@ export async function POST(req: Request) {
 
     const goal = await prisma.goal.create({
       data: {
+        title,
         description,
-        target,
+        target: parseFloat(target),
         unit,
+        targetDate: new Date(targetDate),
         progress: 0,
         userId: user.id,
       },

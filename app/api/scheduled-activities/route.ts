@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
-  const { date, time, activity } = await req.json()
+  const { date, time, activity, name, duration } = await req.json()
 
   try {
     const scheduledActivity = await prisma.scheduledActivity.create({
@@ -18,6 +18,8 @@ export async function POST(req: Request) {
         date: new Date(date),
         time,
         activity,
+        name,
+        duration: parseInt(duration),
         user: { connect: { email: session.user.email as string } },
       },
     })

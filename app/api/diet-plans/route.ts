@@ -10,14 +10,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
-  const { date, meals, waterIntake } = await req.json()
+  const { date, meals, waterIntake, calories, protein, carbs, fat } = await req.json()
 
   try {
     const dietPlan = await prisma.dietPlan.create({
       data: {
         date: new Date(date),
-        meals,
+        meals: JSON.stringify(meals), 
         waterIntake: parseFloat(waterIntake),
+        calories: parseInt(calories),
+        protein: parseFloat(protein),
+        carbs: parseFloat(carbs),
+        fat: parseFloat(fat),
         user: { connect: { email: session.user.email as string } },
       },
     })

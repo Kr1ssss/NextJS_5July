@@ -34,11 +34,11 @@ export default async function DietPlanPage() {
                 <p>Water Intake: {plan.waterIntake}ml</p>
                 <div>
                   <h3 className="font-bold mt-2">Meals:</h3>
-                  {Object.entries(plan.meals as Record<string, string[]>).map(([mealType, foods]) => (
+                  {Object.entries(JSON.parse(plan.meals as string)).map(([mealType, foods]) => (
                     <div key={mealType}>
                       <h4 className="font-semibold capitalize">{mealType}:</h4>
                       <ul>
-                        {foods.map((food, index) => (
+                        {(foods as string[]).map((food, index) => (
                           <li key={index}>{food}</li>
                         ))}
                       </ul>
